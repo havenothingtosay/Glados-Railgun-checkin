@@ -5,7 +5,6 @@ import logging
 from enum import Enum
 from typing import Dict, List, Optional, Tuple, Union
 from dataclasses import dataclass, asdict
-from pypushdeer import PushDeer
 from logging_config import init_logger
 
 
@@ -94,7 +93,7 @@ def log_method(func):
 class Config:
     """应用配置"""
 
-    ENV_PUSH_KEY = "PUSHDEER_SENDKEY"
+    ENV_PUSH_KEY = "SERVERCHAN_SENDKEY"
     ENV_COOKIES = "GLADOS_COOKIES"
     ENV_EXCHANGE_PLAN = "GLADOS_EXCHANGE_PLAN"
     ENV_VERBOSE = "GLADOS_VERBOSE"
@@ -106,7 +105,7 @@ class Config:
     DEFAULT_VERBOSE = False
 
     """默认域名"""
-    DOMAINS = ["glados.cloud", "railgun.info"]
+    DOMAINS = ["glados.space", "glados-facility.com", "glados.cloud", "railgun.info"]
 
     """兑换计划列表"""
     EXCHANGE_PLANS = {
@@ -403,10 +402,17 @@ class PushService:
             return False
 
         try:
-            pushdeer = PushDeer(pushkey=self.config.push_key)
-            pushdeer.send_text(title, desp=content)
-            logger.info(f"{LogEmoji.SUCCESS} 推送通知发送成功。")
-            return True
+            resp = requests.post(
+                f"https://sctapi.ftqq.com/{self.config.push_key}.send",
+                data={"title": title, "desp": content},
+                timeout=15,
+            )
+            if resp.json().get("code") == 0:
+                logger.info(f"{LogEmoji.SUCCESS} 推送通知发送成功。")
+                return True
+            else:
+                logger.error(f"{LogEmoji.ERROR} 推送失败: {resp.text}")
+                return False
         except Exception as e:
             logger.error(f"{LogEmoji.ERROR} 发送推送通知失败: {e}")
             return False
