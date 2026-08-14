@@ -7,8 +7,9 @@ on:
     paths-ignore:
       - 'README.md'
       - 'imgs/**'
+  # 如果修改cron，要同步修改Healthchecks
   schedule:
-    - cron: '08 22,6 * * *'
+    - cron: '08 22,10 * * *'
 
 jobs:
   build:
