@@ -554,6 +554,16 @@ def main():
     logger.info(f"{LogEmoji.START} 步骤 4: 发送推送")
     push_service = PushService(config if "config" in locals() else "")
     push_service.send(title, content)
+
+    # Healthchecks 死人开关：每次执行后发送ping请求，如果没收到请求Healthchecks会报警
+    hc_url = os.environ.get("HEALTHCHECKS_URL", "")
+    if hc_url:
+        try:
+            requests.get(hc_url, timeout=10)
+            logger.info(f"{LogEmoji.SUCCESS} Healthchecks ping 发送成功")
+        except Exception:
+            logger.warning(f"{LogEmoji.WARNING} Healthchecks ping 发送失败")
+            
     logger.info(f"{LogEmoji.END} 签到完成")
 
 
