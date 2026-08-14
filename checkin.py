@@ -105,7 +105,7 @@ class Config:
     DEFAULT_VERBOSE = False
 
     """默认域名"""
-    DOMAINS = ["glados.space", "glados-facility.com", "glados.cloud", "railgun.info"]
+    DOMAINS = ["glados.space", "glados.cloud", "glados.one", "glados-facility.com", "railgun.info"]
 
     """兑换计划列表"""
     EXCHANGE_PLANS = {
@@ -507,13 +507,13 @@ class Checker:
         send_content_lines = []
         log_content_lines = []
         for i, res in enumerate(results, 1):
-            line = f"#{i} P:{res['points']} 剩余:{res['days']} 总积分:{res['points_total']} | {res['status']} | {res['exchange']}"
+            line = f"#{i} 账号{res['cookie_index']} [{res['domain']}] P:{res['points']} 剩余:{res['days']} 总积分:{res['points_total']} | {res['status']} | {res['exchange']}"
             send_content_lines.append(line)
 
             if self.config.verbose:
                 log_line = line
             else:
-                log_line = f"#{i} {res['status']}"
+                log_line = f"#{i} 账号{res['cookie_index']} [{res['domain']}] {res['status']}"
             log_content_lines.append(log_line)
 
         content = "\n".join(send_content_lines)
