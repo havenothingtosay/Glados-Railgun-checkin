@@ -105,7 +105,7 @@ class Config:
     DEFAULT_VERBOSE = False
 
     """默认域名"""
-    DOMAINS = ["glados.one", "glados-facility.com", "glados.space", "glados.cloud", "railgun.info"]
+    DOMAINS = ["glados-facility.com", "glados.space", "glados.cloud", "glados.one", "railgun.info"]
 
     """兑换计划列表"""
     EXCHANGE_PLANS = {
